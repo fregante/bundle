@@ -27,7 +27,7 @@ async function init() {
 				<code>${filename}</code>
 			</a>
 		</p>
-		<textarea>${output.bundle}</textarea>
+		<textarea class="text-pre text-monospace">${output.bundle}</textarea>
 	`);
 
 	const blob = new Blob([output.bundle], {

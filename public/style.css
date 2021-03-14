@@ -1,0 +1,168 @@
+:root {
+	--font-size: 17px;
+	--line-height: 1.7;
+	--light-green: #2c5700;
+	--dark-green: #153d20;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	overflow-y: auto;
+	min-width: 320px;
+	font: var(--font-size) / var(--line-height) Roboto, sans-serif;
+	background: linear-gradient(to bottom, var(--light-green), var(--dark-green))
+		var(--light-green);
+	color: #fff;
+	word-break: break-word;
+}
+
+body {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	background: radial-gradient(
+		ellipse 400px 100px at 50% 100px,
+		rgba(100%, 100%, 100%, 13%),
+		rgba(100%, 100%, 100%, 4%),
+		rgba(100%, 100%, 100%, 0%)
+	);
+	border: 0.5px solid;
+	border-bottom: none;
+	min-height: 100vh;
+}
+
+a {
+	color: inherit;
+}
+
+main {
+	margin: 0 20px;
+	padding-bottom: 40px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+
+main > * {
+	margin: 0 0 calc(var(--font-size) * var(--line-height));
+}
+
+main > :not(h2),
+footer > * {
+	width: 100%;
+	max-width: 500px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+h1 {
+	margin: 7vh auto;
+	font-size: 2.5em;
+	text-align: center;
+}
+
+h1 img {
+	width: 320px;
+	display: block;
+	margin: auto;
+}
+
+h1 a {
+	text-decoration: none;
+}
+
+h1,
+h2,
+h3 {
+	font-weight: 300;
+	font-family: roboto slab, serif;
+}
+
+h2 {
+	font-size: 30px;
+	display: flex;
+	flex-direction: row;
+}
+
+h2:before,
+h2:after {
+	content: "";
+	flex-grow: 1;
+	border-bottom: 0.5px solid;
+	margin-bottom: 1.2ex;
+}
+
+h2:before {
+	margin-right: 20px;
+}
+
+h2:after {
+	margin-left: 20px;
+}
+
+textarea {
+	padding: 0.2em;
+	border: solid 3px silver;
+	border-radius: 4px;
+}
+
+input[type="text"] {
+	border-radius: 4px;
+	border: 0.5px solid;
+}
+
+input[type="text"],
+textarea {
+	background: #153d2088;
+	margin: 0;
+	padding: 0 0.3em;
+	font: inherit;
+	color: inherit;
+	outline: none;
+}
+
+textarea:focus,
+input[type="text"]:focus {
+	background: var(--dark-green);
+}
+
+ol {
+	list-style: none;
+	padding-left: 0;
+}
+
+ul {
+	list-style: none;
+	padding-left: 3.5em;
+}
+
+ul li::before {
+	content: "→ ";
+	position: absolute;
+	margin-left: -1.5em;
+}
+
+.text-monospace {
+	font-family: monospace !important;
+}
+
+.text-pre {
+	white-space: pre !important;
+}
+
+.d-inline-block {
+	display: inline-block !important;
+}
+
+.text-align-center {
+	text-align: center;
+}
