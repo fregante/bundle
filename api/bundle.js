@@ -60,7 +60,7 @@ const bundle = mem(async (nameRequest, globalName) => {
 	const infoProcess = await run('npm', ['view', nameRequest, '--json']);
 	const pkg = JSON.parse(infoProcess.stdout);
 	const isFregante = pkg.maintainers.some(
-		user => user.split(' ')[0] === 'fregante'
+		user => ['fregante', 'bfred-it'].includes(user.split(' ')[0])
 	);
 	if (!isFregante) {
 		throw new UnprocessableError('Only fregante packages allowed');
