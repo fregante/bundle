@@ -39,7 +39,7 @@ class UnprocessableError extends Error {
 module.exports = async (request, response) => {
 	try {
 		console.log('✅ Processing', request.query.pkg);
-		response.json(await bundle(request.query.pkg, request.query.global));
+		response.json(await bundle(request.query.pkg, request.query.global ?? request.query.name));
 		console.log('✅ Bundled', request.query.pkg);
 	} catch (error) {
 		console.error('❌', error);
