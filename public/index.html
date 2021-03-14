@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="https://unpkg.com/chota@0.7.2/dist/chota.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script defer src="loader.js"></script>
+	<title>Bundler for @fregante’s modules</title>
+	<style>
+		* {
+			transition: none !important;
+		}
+
+		:root {
+			--grid-maxWidth: 500px;
+			--color-primary: #4a8a00;
+			padding-bottom: 3rem;
+			-moz-tab-size: 4;
+			tab-size: 4;
+		}
+
+		[name='pkg'] {
+			display: inline-block !important;
+			width: auto !important;
+		}
+
+		h1 {
+			background: #4a8a00;
+			padding: 1em;
+			margin-top: 0;
+			text-align: center;
+		}
+
+		h1 a {
+			color: white;
+		}
+
+		textarea {
+			font-family: monospace;
+		}
+	</style>
+</head>
+<body>
+	<h1><a href="https://github.com/fregante/bundler">@fregante bundler</a></h1>
+	<main class="container">
+		<p>
+			This page creates standalone bundles of
+			<a href="https://github.com/fregante">@fregante</a>’s modules so they can
+			be used without Webpack, Parcel, etc.
+		</p>
+		<form action="/" method="GET">
+			Package to bundle: <input type="text" name="pkg" autocomplete="off" autocapitalize="off">
+		</form>
+
+		<h3 id="status">
+			<noscript>Javascript required, sorry</noscript>
+		</h3>
+	</main>
+</body>
