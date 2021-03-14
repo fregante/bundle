@@ -12,7 +12,6 @@
 	},
 	"dependencies": {
 		"camelcase": "^6.2.0",
-		"dom-chef": "^5.0.0",
 		"execa": "^5.0.0",
 		"mem": "^8.0.0",
 		"rollup": "^2.41.2",
