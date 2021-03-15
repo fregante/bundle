@@ -39,20 +39,17 @@ class UnprocessableError extends Error {
 module.exports = async (request, response) => {
 	try {
 		console.log('✅ Processing', request.query.pkg);
-		response.json(
-			await bundle(
-				request.query.pkg,
-				request.query.global ?? request.query.name
-			)
+		const {version, code} = await bundle(
+			request.query.pkg,
+			request.query.global ?? request.query.name
 		);
+		response.setHeader('x-bundle-version', version);
+		response.send(code);
 		console.log('✅ Bundled', request.query.pkg);
 	} catch (error) {
 		console.error('❌', error);
 		response.status(error.statusCode ?? 500);
-
-		response.json({
-			error: error.message
-		});
+		response.send(error.message);
 	}
 };
 
@@ -84,7 +81,7 @@ const bundle = mem(async (nameRequest, globalName) => {
 	const packagePath = path.resolve(cwd, 'node_modules', pkg.name);
 	return {
 		version: pkg.version,
-		bundle: await bundleWithRollup(
+		code: await bundleWithRollup(
 			packagePath,
 			globalName ?? camelcase(pkg.name)
 		)

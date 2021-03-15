@@ -12,13 +12,13 @@ async function init() {
 
 	url.pathname = '/api/bundle';
 	const response = await fetch(url);
-	const output = await response.json();
+	const output = await response.text();
 
 	if (!response.ok) {
-		throw new Error(output.error);
+		throw new Error(output);
 	}
 
-	const filename = pkg + '.' + output.version + '.js';
+	const filename = pkg + '.' + response.headers.get('x-bundle-version') + '.js';
 	status.textContent = 'Bundle ready!';
 	status.insertAdjacentHTML('afterend', `
 		<p>
@@ -27,7 +27,7 @@ async function init() {
 				<code>${filename}</code>
 			</a>
 		</p>
-		<textarea class="text-pre text-monospace">${output.bundle}</textarea>
+		<textarea class="text-pre text-monospace">${output}</textarea>
 	`);
 
 	const blob = new Blob([output.bundle], {
