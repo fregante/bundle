@@ -35,8 +35,9 @@ async function init() {
 	});
 	document.querySelector('a[download]').href = URL.createObjectURL(blob);
 
-	const {default: fitTextarea} = await import('https://unpkg.com/fit-textarea@latest/index.js');
-	fitTextarea.watch('textarea');
+	// Resize source field to fit content
+	const source = document.querySelector('textarea');
+	source.style.height = source.scrollHeight + 10 + 'px';
 }
 
 init().catch(error => {
