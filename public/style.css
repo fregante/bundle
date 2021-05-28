@@ -113,6 +113,9 @@ textarea {
 	padding: 0.2em;
 	border: solid 3px silver;
 	border-radius: 4px;
+	font-size: 10px;
+	line-height: 1.1;
+	tab-size: 2;
 }
 
 input[type='text'] {
