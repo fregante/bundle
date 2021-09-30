@@ -30,7 +30,7 @@ async function init() {
 		<textarea class="text-pre text-monospace">${output}</textarea>
 	`);
 
-	const blob = new Blob([output.bundle], {
+	const blob = new Blob([output], {
 		type: 'application/javascript'
 	});
 	document.querySelector('a[download]').href = URL.createObjectURL(blob);
