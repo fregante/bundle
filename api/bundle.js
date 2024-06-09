@@ -1,23 +1,24 @@
-const execa = require('execa');
-const path = require('path');
-const rollup = require('rollup');
-const tempdir = require('tempdir');
-const resolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
-const cleanup = require('rollup-plugin-cleanup');
-const camelcase = require('camelcase');
-const mem = require('mem');
+import {resolve as _resolve} from 'node:path';
+import process from 'node:process';
+import {execa} from 'execa';
+import {rollup as _rollup} from 'rollup';
+import {sync} from 'tempdir';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
+import cleanup from 'rollup-plugin-cleanup';
+import camelcase from 'camelcase';
+import memoize from 'memoize';
 
-const cwd = tempdir.sync();
-const home = tempdir.sync();
+const cwd = sync();
+const home = sync();
 
-async function run(name, args) {
-	console.log('💻 Running', name, ...args);
-	const running = execa(name, args, {
+async function run(name, arguments_) {
+	console.log('💻 Running', name, ...arguments_);
+	const running = execa(name, arguments_, {
 		cwd,
 		env: {
-			HOME: home
-		}
+			HOME: home,
+		},
 	});
 
 	running.stdout.pipe(process.stdout);
@@ -36,12 +37,12 @@ class UnprocessableError extends Error {
  * @param {import('@vercel/node').VercelRequest} request
  * @param {import('@vercel/node').VercelResponse} response
  */
-module.exports = async (request, response) => {
+export default async function handle(request, response) {
 	try {
 		console.log('✅ Processing', request.query.pkg);
 		const {version, code} = await bundle(
 			request.query.pkg,
-			request.query.global ?? request.query.name
+			request.query.global ?? request.query.name,
 		);
 		response.setHeader('x-bundle-version', version);
 		response.send(code);
@@ -51,18 +52,18 @@ module.exports = async (request, response) => {
 		response.status(error.statusCode ?? 500);
 		response.send(error.message);
 	}
-};
+}
 
-const bundle = mem(async (nameRequest, globalName) => {
+const bundle = memoize(async (nameRequest, globalName) => {
 	if (/[^a-z\d@/-]/i.test(nameRequest)) {
 		throw new UnprocessableError('Invalid package name');
 	}
 
 	console.log('⏳ Getting info about', nameRequest);
 	const infoProcess = await run('npm', ['view', nameRequest, '--json']);
-	const pkg = JSON.parse(infoProcess.stdout);
-	const isFregante = pkg.maintainers.some(
-		user => ['fregante', 'bfred-it'].includes(user.split(' ')[0])
+	const package_ = JSON.parse(infoProcess.stdout);
+	const isFregante = package_.maintainers.some(
+		user => ['fregante', 'bfred-it'].includes(user.split(' ')[0]),
 	);
 	if (!isFregante) {
 		throw new UnprocessableError('Only fregante packages allowed');
@@ -75,38 +76,38 @@ const bundle = mem(async (nameRequest, globalName) => {
 		'--omit=dev',
 		'--ignore-scripts',
 		'--no-audit',
-		'--no-bin-links'
+		'--no-bin-links',
 	]);
 
-	const packagePath = path.resolve(cwd, 'node_modules', pkg.name);
+	const packagePath = _resolve(cwd, 'node_modules', package_.name);
 	return {
-		version: pkg.version,
+		version: package_.version,
 		code: await bundleWithRollup(
 			packagePath,
-			globalName ?? camelcase(pkg.name)
-		)
+			globalName ?? camelcase(package_.name),
+		),
 	};
 }, {
-	cacheKey: JSON.stringify
+	cacheKey: JSON.stringify,
 });
 
 console.clear();
 console.log('✅ Node server running');
 
 async function bundleWithRollup(input, name) {
-	const bundle = await rollup.rollup({
+	const bundle = await _rollup({
 		input,
 		plugins: [
 			resolve({browser: true}),
 			commonjs(),
-			cleanup()
-		]
+			cleanup(),
+		],
 	});
 
 	const result = await bundle.generate({
 		format: 'iife',
 		extend: name === 'window',
-		name
+		name,
 	});
 
 	if (result.output.length > 1) {
