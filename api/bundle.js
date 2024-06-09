@@ -1,9 +1,9 @@
-import {resolve as _resolve} from 'node:path';
+import {resolve} from 'node:path';
 import process from 'node:process';
 import {execa} from 'execa';
-import {rollup as _rollup} from 'rollup';
+import {rollup} from 'rollup';
 import {sync} from 'tempdir';
-import resolve from '@rollup/plugin-node-resolve';
+import rollupResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import cleanup from 'rollup-plugin-cleanup';
 import camelcase from 'camelcase';
@@ -79,7 +79,7 @@ const bundle = memoize(async (nameRequest, globalName) => {
 		'--no-bin-links',
 	]);
 
-	const packagePath = _resolve(cwd, 'node_modules', package_.name);
+	const packagePath = resolve(cwd, 'node_modules', package_.name);
 	return {
 		version: package_.version,
 		code: await bundleWithRollup(
@@ -95,10 +95,10 @@ console.clear();
 console.log('✅ Node server running');
 
 async function bundleWithRollup(input, name) {
-	const bundle = await _rollup({
+	const bundle = await rollup({
 		input,
 		plugins: [
-			resolve({browser: true}),
+			rollupResolve({browser: true}),
 			commonjs(),
 			cleanup(),
 		],
