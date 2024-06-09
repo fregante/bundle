@@ -2,12 +2,12 @@ const status = document.querySelector('#status');
 
 async function init() {
 	const url = new URL(location.href);
-	const pkg = url.searchParams.get('pkg');
-	if (!pkg) {
+	const package_ = url.searchParams.get('pkg');
+	if (!package_) {
 		return;
 	}
 
-	document.querySelector('[name="pkg"]').value = pkg;
+	document.querySelector('[name="pkg"]').value = package_;
 	status.textContent = 'Bundling…';
 
 	url.pathname = '/api/bundle';
@@ -18,7 +18,7 @@ async function init() {
 		throw new Error(output);
 	}
 
-	const filename = pkg + '.' + response.headers.get('x-bundle-version') + '.js';
+	const filename = package_ + '.' + response.headers.get('x-bundle-version') + '.js';
 	status.textContent = 'Bundle ready!';
 	status.insertAdjacentHTML('afterend', `
 		<p>
@@ -31,7 +31,7 @@ async function init() {
 	`);
 
 	const blob = new Blob([output], {
-		type: 'application/javascript'
+		type: 'application/javascript',
 	});
 	document.querySelector('a[download]').href = URL.createObjectURL(blob);
 
@@ -40,10 +40,12 @@ async function init() {
 	source.style.height = source.scrollHeight + 10 + 'px';
 }
 
-init().catch(error => {
+try {
+	await init();
+} catch (error) {
 	console.error(error);
 	status.textContent = 'Got an error';
 	status.insertAdjacentHTML('afterend', `
 		<pre>${error.message}</pre>
 	`);
-});
+}
