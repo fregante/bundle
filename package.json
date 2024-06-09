@@ -11,6 +11,9 @@
 			"browser"
 		]
 	},
+	"resolutions": {
+		"rollup": "npm:@rollup/wasm-node"
+	},
 	"dependencies": {
 		"@rollup/plugin-commonjs": "^26.0.1",
 		"@rollup/plugin-node-resolve": "^15.2.3",
