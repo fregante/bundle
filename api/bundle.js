@@ -84,22 +84,26 @@ const bundle = memoize(async (nameRequest, globalName) => {
 
 	const fs = require('fs');
 
-	console.log('----pkg')
+	
 fs.readdir(resolve(cwd, 'node_modules', package_.name), (err, files) => {
-  files.forEach(file => {
-    console.log(file);
-  });
-});console.log('----node pkg')
-	fs.readdir(resolve(cwd, 'node_modules'), (err, files) => {
-  files.forEach(file => {
-    console.log(file);
-  });
-});console.log('----cwd')
-	fs.readdir(resolve(cwd), (err, files) => {
+	console.log('----pkg')
   files.forEach(file => {
     console.log(file);
   });
 });
+	fs.readdir(resolve(cwd, 'node_modules'), (err, files) => {
+		console.log('----node pkg')
+  files.forEach(file => {
+    console.log(file);
+  });
+});
+	fs.readdir(resolve(cwd), (err, files) => {
+		console.log('----cwd')
+  files.forEach(file => {
+    console.log(file);
+  });
+});
+	console.log(fs.readFileSync(resolve(cwd, 'node_modules', package_.name, 'package.json'), 'utf-8')
 	const packagePath = require.resolve(resolve(cwd, 'node_modules', package_.name));
 
 	return {
