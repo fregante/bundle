@@ -82,28 +82,27 @@ const bundle = memoize(async (nameRequest, globalName) => {
 		'--no-bin-links',
 	]);
 
-	const fs = require('fs');
+	const fs = require('node:fs');
 
-	
-fs.readdir(resolve(cwd, 'node_modules', package_.name), (err, files) => {
-	console.log('----pkg')
-  files.forEach(file => {
-    console.log(file);
-  });
-});
-	fs.readdir(resolve(cwd, 'node_modules'), (err, files) => {
-		console.log('----node pkg')
-  files.forEach(file => {
-    console.log(file);
-  });
-});
-	fs.readdir(resolve(cwd), (err, files) => {
-		console.log('----cwd')
-  files.forEach(file => {
-    console.log(file);
-  });
-});
-	console.log(fs.readFileSync(resolve(cwd, 'node_modules', package_.name, 'package.json'), 'utf-8')
+	fs.readdir(resolve(cwd, 'node_modules', package_.name), (error, files) => {
+		console.log('----pkg');
+		for (const file of files) {
+			console.log(file);
+		}
+	});
+	fs.readdir(resolve(cwd, 'node_modules'), (error, files) => {
+		console.log('----node pkg');
+		for (const file of files) {
+			console.log(file);
+		}
+	});
+	fs.readdir(resolve(cwd), (error, files) => {
+		console.log('----cwd');
+		for (const file of files) {
+			console.log(file);
+		}
+	});
+	console.log(fs.readFileSync(resolve(cwd, 'node_modules', package_.name, 'package.json'), 'utf8'));
 	const packagePath = require.resolve(resolve(cwd, 'node_modules', package_.name));
 
 	return {
