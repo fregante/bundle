@@ -1,6 +1,6 @@
 import {resolve} from 'node:path';
 import process from 'node:process';
-import {createRequire} from 'node:module';
+import fs from 'node:fs';
 import {execa} from 'execa';
 import {rollup} from 'rollup';
 import {sync} from 'tempdir';
@@ -9,8 +9,6 @@ import commonjs from '@rollup/plugin-commonjs';
 import cleanup from 'rollup-plugin-cleanup';
 import camelcase from 'camelcase';
 import memoize from 'memoize';
-
-const require = createRequire(import.meta.url);
 
 const cwd = sync();
 const home = sync();
@@ -82,13 +80,14 @@ const bundle = memoize(async (nameRequest, globalName) => {
 		'--no-bin-links',
 	]);
 
-	await import(nameRequest);
-	const packagePath = import.meta.resolve(resolve(cwd, 'node_modules', package_.name));
+	// Rollup can't resolve a package with complex `exports` map when passed as `input`
+	const localEntryPoint = resolve(cwd, 'index.js');
+	fs.writeFileSync(localEntryPoint, `export * from '${nameRequest}';`);
 
 	return {
 		version: package_.version,
 		code: await bundleWithRollup(
-			packagePath,
+			localEntryPoint,
 			globalName ?? camelcase(package_.name),
 		),
 	};
