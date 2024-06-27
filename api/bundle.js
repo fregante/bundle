@@ -58,7 +58,7 @@ export default async function handle(request, response) {
 }
 
 const bundle = memoize(async (nameRequest, globalName) => {
-	if (/[^a-z\d@/-]/i.test(nameRequest)) {
+	if (/[^a-z\d@/.]/i.test(nameRequest)) {
 		throw new UnprocessableError('Invalid package name');
 	}
 
