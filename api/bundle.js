@@ -1,3 +1,4 @@
+import {resolve} from 'node:path';
 import process from 'node:process';
 import { createRequire } from 'node:module';
 import {execa} from 'execa';
@@ -81,10 +82,12 @@ const bundle = memoize(async (nameRequest, globalName) => {
 		'--no-bin-links',
 	]);
 
+	const packagePath = require.resolve(resolve(cwd, 'node_modules', package_.name));
+
 	return {
 		version: package_.version,
 		code: await bundleWithRollup(
-			require.resolve(package_.name),
+			packagePath,
 			globalName ?? camelcase(package_.name),
 		),
 	};
