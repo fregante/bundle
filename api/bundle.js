@@ -1,5 +1,6 @@
 import {resolve} from 'node:path';
 import process from 'node:process';
+import fs from 'node:fs';
 import {execa} from 'execa';
 import {rollup} from 'rollup';
 import {sync} from 'tempdir';
@@ -55,7 +56,7 @@ export default async function handle(request, response) {
 }
 
 const bundle = memoize(async (nameRequest, globalName) => {
-	if (/[^a-z\d@/-]/i.test(nameRequest)) {
+	if (/[^a-z\d@/.-]/i.test(nameRequest)) {
 		throw new UnprocessableError('Invalid package name');
 	}
 
@@ -79,11 +80,14 @@ const bundle = memoize(async (nameRequest, globalName) => {
 		'--no-bin-links',
 	]);
 
-	const packagePath = resolve(cwd, 'node_modules', package_.name);
+	// Rollup can't resolve a package with complex `exports` map when passed as `input`
+	const localEntryPoint = resolve(cwd, 'index.js');
+	fs.writeFileSync(localEntryPoint, `export * from '${nameRequest}';`);
+
 	return {
 		version: package_.version,
 		code: await bundleWithRollup(
-			packagePath,
+			localEntryPoint,
 			globalName ?? camelcase(package_.name),
 		),
 	};
