@@ -1,6 +1,6 @@
 import {resolve} from 'node:path';
 import process from 'node:process';
-import { createRequire } from 'node:module';
+import {createRequire} from 'node:module';
 import {execa} from 'execa';
 import {rollup} from 'rollup';
 import {sync} from 'tempdir';
@@ -82,6 +82,24 @@ const bundle = memoize(async (nameRequest, globalName) => {
 		'--no-bin-links',
 	]);
 
+	const fs = require('fs');
+
+	console.log('----pkg')
+fs.readdir(resolve(cwd, 'node_modules', package_.name), (err, files) => {
+  files.forEach(file => {
+    console.log(file);
+  });
+});console.log('----node pkg')
+	fs.readdir(resolve(cwd, 'node_modules'), (err, files) => {
+  files.forEach(file => {
+    console.log(file);
+  });
+});console.log('----cwd')
+	fs.readdir(resolve(cwd), (err, files) => {
+  files.forEach(file => {
+    console.log(file);
+  });
+});
 	const packagePath = require.resolve(resolve(cwd, 'node_modules', package_.name));
 
 	return {
