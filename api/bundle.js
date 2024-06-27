@@ -98,7 +98,7 @@ async function bundleWithRollup(input, name) {
 	const bundle = await rollup({
 		input,
 		plugins: [
-			rollupResolve({browser: true}),
+			rollupResolve(),
 			commonjs(),
 			cleanup(),
 		],
