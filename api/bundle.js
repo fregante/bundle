@@ -1,4 +1,4 @@
-import {resolve} from 'node:path';
+import path from 'node:path';
 import process from 'node:process';
 import fs from 'node:fs';
 import {execa} from 'execa';
@@ -56,16 +56,14 @@ export default async function handle(request, response) {
 }
 
 const bundle = memoize(async (nameRequest, globalName) => {
-	if (/[^a-z\d@/.-]/i.test(nameRequest)) {
+	if (/[^a-z\d@\/.\-]/iv.test(nameRequest)) {
 		throw new UnprocessableError('Invalid package name');
 	}
 
 	console.log('⏳ Getting info about', nameRequest);
 	const infoProcess = await run('npm', ['view', nameRequest, '--json']);
 	const package_ = JSON.parse(infoProcess.stdout);
-	const isFregante = package_.maintainers.some(
-		user => ['fregante', 'bfred-it'].includes(user.split(' ')[0]),
-	);
+	const isFregante = package_.maintainers.some(user => ['fregante', 'bfred-it'].includes(user.split(' ')[0]));
 	if (!isFregante) {
 		throw new UnprocessableError('Only fregante packages allowed');
 	}
@@ -81,7 +79,7 @@ const bundle = memoize(async (nameRequest, globalName) => {
 	]);
 
 	// Rollup can't resolve a package with complex `exports` map when passed as `input`
-	const localEntryPoint = resolve(cwd, 'index.js');
+	const localEntryPoint = path.resolve(cwd, 'index.js');
 	fs.writeFileSync(localEntryPoint, `export * from '${nameRequest}';`);
 
 	return {
