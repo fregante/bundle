@@ -2,6 +2,11 @@
 	"github": {
 		"silent": true
 	},
+	"functions": {
+		"api/**/*.js": {
+			"runtime": "@vercel/node@5.8.1"
+		}
+	},
 	"headers": [
 		{
 			"source": "/api/bundle",
