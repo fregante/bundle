@@ -17,12 +17,8 @@
 		"tempdir": "^2.0.0"
 	},
 	"devDependencies": {
-		"@rollup/rollup-linux-x64-gnu": "^4.60.3",
 		"@vercel/node": "^5.0.0",
 		"xo": "^2.0.2"
-	},
-	"optionalDependencies": {
-		"@rollup/rollup-linux-x64-gnu": "*"
 	},
 	"engines": {
 		"node": ">=22"
