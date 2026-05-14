@@ -12,13 +12,16 @@
 		"camelcase": "^9.0.0",
 		"execa": "^9.6.1",
 		"memoize": "^11.0.0",
-		"rollup": "^4.60.3",
+		"rollup": "npm:@rollup/wasm-node",
 		"rollup-plugin-cleanup": "^3.2.1",
 		"tempdir": "^2.0.0"
 	},
 	"devDependencies": {
 		"@vercel/node": "^5.0.0",
 		"xo": "^2.0.2"
+	},
+	"overrides": {
+		"rollup": "npm:@rollup/wasm-node"
 	},
 	"engines": {
 		"node": ">=22"
