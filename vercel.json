@@ -4,7 +4,7 @@
 	},
 	"functions": {
 		"api/**/*.js": {
-			"runtime": "nodejs22.x"
+			"runtime": "@vercel/node@5.8.1"
 		}
 	},
 	"headers": [
