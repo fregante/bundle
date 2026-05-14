@@ -1,3 +1,4 @@
+/* global Blob, URL, document, fetch, location */
 const status = document.querySelector('#status');
 
 async function init() {

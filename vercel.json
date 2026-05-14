@@ -2,6 +2,11 @@
 	"github": {
 		"silent": true
 	},
+	"functions": {
+		"api/**/*.js": {
+			"runtime": "nodejs22.x"
+		}
+	},
 	"headers": [
 		{
 			"source": "/api/bundle",
